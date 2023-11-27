@@ -151,7 +151,7 @@ public class Main {
             }
 
             if (p == 100) {
-                return ("L");
+                return ("C");
             }
 
         } else {                                                    // Сценарий, когда вводятся арабские числа
