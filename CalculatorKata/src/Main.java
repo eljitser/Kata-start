@@ -6,11 +6,16 @@ public class Main {
         Scanner in = new Scanner(System.in);
         String Str = in.nextLine();
 
-        System.out.println(calc(Str));
+        try {
+            System.out.println(calc(Str));
+        } catch (IllegalArgumentException e) {
+            System.out.println("throws Exception");
+        }
+
         System.exit(0);
     }
 
-    public static String calc(String input) {
+    public static String calc(String input) throws IllegalArgumentException {
 
         int a;                  //первое число
         int b;                  //второе число
@@ -29,62 +34,41 @@ public class Main {
             return ("throws Exception");
         }
 
-        if (subStr[0].charAt(0) == 73 || subStr[0].charAt(0) == 86 || subStr[0].charAt(0) == 88) {
-            if (subStr[1].charAt(0) == 73 || subStr[1].charAt(0) == 86 || subStr[1].charAt(0) == 88) {
+        if (subStr[0].charAt(0) == 73 || subStr[0].charAt(0) == 86 || subStr[0].charAt(0) == 88) {    // 1ый символ 1ой строковой переменной (потенциально римские числа)
 
-                Rome = true;
-                try {
-                    Roman roman1 = Roman.valueOf(subStr[0]);
-                    a = roman1.getTranslation();
-                } catch (IllegalArgumentException e) {
-                    return ("throws Exception");
-                }
 
-                try {
-                    Roman roman2 = Roman.valueOf(subStr[1]);
-                    b = roman2.getTranslation();
-                } catch (IllegalArgumentException e) {
-                    return ("throws Exception");
-                }
+            Rome = true;
 
-            } else {
+            Roman roman1 = Roman.valueOf(subStr[0]);
+            a = roman1.getTranslation();
+
+            Roman roman2 = Roman.valueOf(subStr[1]);
+            b = roman2.getTranslation();
+
+
+
+
+        } else {         // потенциально арабские числа
+
+
+            a = Integer.parseInt(subStr[0]);
+            if (a < 1 || a > 10) {
                 return ("throws Exception");
             }
 
-        } else {
-            if (subStr[1].charAt(0) == 73 || subStr[1].charAt(0) == 86 || subStr[1].charAt(0) == 88) {
+            b = Integer.parseInt(subStr[1]);
+            if (b < 1 || b > 10) {
                 return ("throws Exception");
-            } else {
-
-                try {
-                    a = Integer.parseInt(subStr[0]);
-                } catch (NumberFormatException e) {
-                    return ("throws Exception");
-                }
-
-                try {
-                    b = Integer.parseInt(subStr[1]);
-                } catch (NumberFormatException e) {
-                    return ("throws Exception");
-                }
             }
 
-        }
 
 
-        if (a < 1 || a > 10) {
-            return ("throws Exception");
         }
 
-        if (b < 1 || b > 10) {
-            return ("throws Exception");
-        }
 
         int Z = subStr[0].length();                           // Находим порядковую позицию оператора в строке
 
-
         char Znak = input.charAt(Z);                            // Определяем код Utf-16 оператора
-
 
         switch (Znak) {
             case 43:
@@ -151,10 +135,10 @@ public class Main {
             }
 
             if (p == 100) {
-                return ("L");
+                return ("C");
             }
 
-        } else {                                                    // Сценарий, когда вводятся арабские числа
+        } else {                                                 // Сценарий, когда вводятся арабские числа
             return Integer.toString(p);
 
         }
