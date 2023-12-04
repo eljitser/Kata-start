@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
@@ -8,14 +9,14 @@ public class Main {
 
         try {
             System.out.println(calc(Str));
-        } catch (IllegalArgumentException e) {
+        } catch (Exception e) {
             System.out.println("throws Exception");
         }
 
         System.exit(0);
     }
 
-    public static String calc(String input) throws IllegalArgumentException {
+    public static String calc(String input) throws IllegalArgumentException, IOException {
 
         int a;                  //первое число
         int b;                  //второе число
@@ -25,17 +26,16 @@ public class Main {
         input = input.replaceAll(" ", "");          // Избавляемся от всех пробелов в строке
         input = input.toUpperCase();                                 // Переводим все символы в верхний регистр
         if (input.length() > 9) {                                    // Ограничили кол-во символов в строке
-            return ("throws Exception");
+            throw new IOException();
         }
         String[] subStr;
         subStr = input.split("[-+*/]");
 
         if (!(subStr.length == 2)) {
-            return ("throws Exception");
+            throw new IOException();
         }
 
         if (subStr[0].charAt(0) == 73 || subStr[0].charAt(0) == 86 || subStr[0].charAt(0) == 88) {    // 1ый символ 1ой строковой переменной (потенциально римские числа)
-
 
             Rome = true;
 
@@ -46,23 +46,17 @@ public class Main {
             b = roman2.getTranslation();
 
 
-
-
         } else {         // потенциально арабские числа
-
 
             a = Integer.parseInt(subStr[0]);
             if (a < 1 || a > 10) {
-                return ("throws Exception");
+                throw new IOException();
             }
 
             b = Integer.parseInt(subStr[1]);
             if (b < 1 || b > 10) {
-                return ("throws Exception");
+                throw new IOException();
             }
-
-
-
         }
 
 
@@ -70,26 +64,18 @@ public class Main {
 
         char Znak = input.charAt(Z);                            // Определяем код Utf-16 оператора
 
-        switch (Znak) {
-            case 43:
-                p = a + b;
-                break;
-            case 45:
-                p = a - b;
-                break;
-            case 42:
-                p = a * b;
-                break;
-            case 47:
-                p = a / b;
-                break;
-            default:
-                return ("throws Exception");
-        }
+        p = switch (Znak) {
+            case 43 -> a + b;
+            case 45 -> a - b;
+            case 42 -> a * b;
+            case 47 -> a / b;
+            default -> throw new IllegalArgumentException();
+        };
+
         if (Rome) {                                             // Сценарий, когда вводятся римские числа
 
             if (p < 1) {                                           //  Результат с недопустимым значением
-                return ("throws Exception");
+                throw new IOException();
             }
 
             if (p < 10) {
